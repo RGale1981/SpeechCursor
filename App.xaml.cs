@@ -7,8 +7,6 @@ using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Interop;
 
-using SpeechCursor.Record;
-
 namespace SpeechCursor;
 
 public partial class App : Application
@@ -190,28 +188,37 @@ public partial class App : Application
         var popupWidth = GetPopupWidth();
         var popupHeight = GetPopupHeight();
         var windowWidth = GetMainWindowWidth();
-        var windowHeight = GetMainWindowHeight();
 
         switch (_popupAnchor)
         {
             case PopupAnchor.RightOutsideTopAligned:
-                _recordPopup.HorizontalOffset = _mainWindow.Left + windowWidth + PopupGap;
-                _recordPopup.VerticalOffset = _mainWindow.Top;
-                break;
+                {
+                    _recordPopup.HorizontalOffset = _mainWindow.Left + windowWidth + PopupGap;
+                    _recordPopup.VerticalOffset = _mainWindow.Top;
+
+                    break;
+                }
 
             case PopupAnchor.OverlayBottomRight:
-                var windowBounds = MonitorWorkAreaHelper.GetWindowBounds(_mainWindow);
-                var workArea = GetMainWindowWorkArea();
-                var visibleRight = Math.Min(windowBounds.Right, workArea.Right);
-                var visibleBottom = Math.Min(windowBounds.Bottom, workArea.Bottom);
-                _recordPopup.HorizontalOffset = visibleRight - popupWidth;
-                _recordPopup.VerticalOffset = visibleBottom - popupHeight;
-                break;
+                {
+                    var windowBounds = MonitorWorkAreaHelper.GetWindowBounds(_mainWindow);
+                    var workArea = GetMainWindowWorkArea();
+                    var visibleRight = Math.Min(windowBounds.Right, workArea.Right);
+                    var visibleBottom = Math.Min(windowBounds.Bottom, workArea.Bottom);
+
+                    _recordPopup.HorizontalOffset = visibleRight - popupWidth;
+                    _recordPopup.VerticalOffset = visibleBottom - popupHeight;
+
+                    break;
+                }
 
             default:
-                _recordPopup.HorizontalOffset = _mainWindow.Left - popupWidth - PopupGap;
-                _recordPopup.VerticalOffset = _mainWindow.Top;
-                break;
+                {
+                    _recordPopup.HorizontalOffset = _mainWindow.Left - popupWidth - PopupGap;
+                    _recordPopup.VerticalOffset = _mainWindow.Top;
+
+                    break;
+                }
         }
     }
 
@@ -226,19 +233,28 @@ public partial class App : Application
         switch (_popupAnchor)
         {
             case PopupAnchor.RightOutsideTopAligned:
-                _mainWindow.Left = _recordPopup.HorizontalOffset - PopupGap - GetMainWindowWidth();
-                _mainWindow.Top = _recordPopup.VerticalOffset;
-                break;
+                {
+                    _mainWindow.Left = _recordPopup.HorizontalOffset - PopupGap - GetMainWindowWidth();
+                    _mainWindow.Top = _recordPopup.VerticalOffset;
+
+                    break;
+                }
 
             case PopupAnchor.OverlayBottomRight:
-                _mainWindow.Left = _recordPopup.HorizontalOffset + popupWidth - GetMainWindowWidth();
-                _mainWindow.Top = _recordPopup.VerticalOffset + popupHeight - GetMainWindowHeight();
-                break;
+                {
+                    _mainWindow.Left = _recordPopup.HorizontalOffset + popupWidth - GetMainWindowWidth();
+                    _mainWindow.Top = _recordPopup.VerticalOffset + popupHeight - GetMainWindowHeight();
+
+                    break;
+                }
 
             default:
-                _mainWindow.Left = _recordPopup.HorizontalOffset + popupWidth + PopupGap;
-                _mainWindow.Top = _recordPopup.VerticalOffset;
-                break;
+                {
+                    _mainWindow.Left = _recordPopup.HorizontalOffset + popupWidth + PopupGap;
+                    _mainWindow.Top = _recordPopup.VerticalOffset;
+
+                    break;
+                }
         }
     }
 
@@ -265,8 +281,8 @@ public partial class App : Application
         var rightSpace = workArea.Right - (_mainWindow.Left + GetMainWindowWidth());
 
         return rightSpace > leftSpace
-            ? PopupAnchor.RightOutsideTopAligned
-            : PopupAnchor.LeftOutsideTopAligned;
+               ? PopupAnchor.RightOutsideTopAligned
+               : PopupAnchor.LeftOutsideTopAligned;
     }
 
     private Rect GetMainWindowWorkArea()
@@ -360,6 +376,7 @@ public partial class App : Application
     {
         DependencyPropertyDescriptor.FromProperty(Popup.HorizontalOffsetProperty, typeof(Popup))
             .AddValueChanged(popup, OnPopupPositionChanged);
+
         DependencyPropertyDescriptor.FromProperty(Popup.VerticalOffsetProperty, typeof(Popup))
             .AddValueChanged(popup, OnPopupPositionChanged);
     }
@@ -368,6 +385,7 @@ public partial class App : Application
     {
         DependencyPropertyDescriptor.FromProperty(Popup.HorizontalOffsetProperty, typeof(Popup))
             .RemoveValueChanged(popup, OnPopupPositionChanged);
+
         DependencyPropertyDescriptor.FromProperty(Popup.VerticalOffsetProperty, typeof(Popup))
             .RemoveValueChanged(popup, OnPopupPositionChanged);
     }
