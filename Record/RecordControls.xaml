@@ -4,19 +4,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:local="clr-namespace:Windows.Record"
-             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:b="clr-namespace:Windows.Behaviors"
              d:DataContext="{d:DesignInstance Type=local:RecordViewModel}"
              mc:Ignorable="d" 
-             Background="Transparent">
+             Background="Transparent"
+             b:PopupDragBehavior.EnableDrag="True">
     
     <Grid x:Name="GridHost"
           Background="Transparent" 
           Margin="4" >
-
-        <i:Interaction.Behaviors>
-            <b:DragMoveBehavior />
-        </i:Interaction.Behaviors>
 
         <ToggleButton x:Name="ToggleRecord"
                       Content="REC"
