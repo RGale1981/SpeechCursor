@@ -1,4 +1,3 @@
-using System;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls.Primitives;
@@ -6,7 +5,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Threading;
 
-namespace Windows.Behaviors;
+namespace SpeechCursor.Behaviors;
 
 public sealed class PopupZOrderCoordinator : IDisposable
 {
@@ -18,8 +17,6 @@ public sealed class PopupZOrderCoordinator : IDisposable
     private const uint SwpNoSize = 0x0001;
     private const uint SwpNoOwnerZOrder = 0x0200;
     private const uint SwpNoSendChanging = 0x0400;
-    private const uint SwpNoZOrder = 0x0004;
-
     private readonly Window _mainWindow;
     private readonly Popup _popup;
     private readonly UIElement? _popupChild;
@@ -29,15 +26,15 @@ public sealed class PopupZOrderCoordinator : IDisposable
     public PopupZOrderCoordinator(Window mainWindow, Popup popup)
     {
         _mainWindow = mainWindow;
-        _popup = popup;
-        _popupChild = popup.Child as UIElement;
-
         _mainWindow.Activated += OnMainWindowActivated;
         _mainWindow.Deactivated += OnMainWindowDeactivated;
         _mainWindow.StateChanged += OnMainWindowStateChanged;
         _mainWindow.IsVisibleChanged += OnMainWindowIsVisibleChanged;
+
+        _popup = popup;
         _popup.Opened += OnPopupOpened;
-        _popup.Closed += OnPopupClosed;
+
+        _popupChild = popup.Child;
 
         if (_popupChild is not null)
             _popupChild.PreviewMouseLeftButtonDown += OnPopupMouseLeftButtonDown;
@@ -54,8 +51,8 @@ public sealed class PopupZOrderCoordinator : IDisposable
         _mainWindow.Deactivated -= OnMainWindowDeactivated;
         _mainWindow.StateChanged -= OnMainWindowStateChanged;
         _mainWindow.IsVisibleChanged -= OnMainWindowIsVisibleChanged;
+
         _popup.Opened -= OnPopupOpened;
-        _popup.Closed -= OnPopupClosed;
 
         if (_popupChild is not null)
             _popupChild.PreviewMouseLeftButtonDown -= OnPopupMouseLeftButtonDown;
@@ -63,7 +60,7 @@ public sealed class PopupZOrderCoordinator : IDisposable
         _isDisposed = true;
     }
 
-    private void OnMainWindowActivated(object? sender, EventArgs e) => BringPopupAboveMainWindow();
+    private void OnMainWindowActivated(object? sender, EventArgs e) => BringPopupTopMost();
 
     private void OnMainWindowDeactivated(object? sender, EventArgs e)
         => _mainWindow.Dispatcher.BeginInvoke(SyncPopupZOrder, DispatcherPriority.ApplicationIdle);
@@ -74,10 +71,6 @@ public sealed class PopupZOrderCoordinator : IDisposable
 
     private void OnPopupOpened(object? sender, EventArgs e) => SyncPopupZOrder();
 
-    private void OnPopupClosed(object? sender, EventArgs e)
-    {
-    }
-
     private void OnPopupMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
         if (!_hasMainWindowEverBeenShown && !_mainWindow.IsVisible)
@@ -86,7 +79,7 @@ public sealed class PopupZOrderCoordinator : IDisposable
             return;
         }
 
-        BringPopupAboveMainWindow();
+        BringPopupTopMost();
     }
 
     private void SyncPopupZOrder()
@@ -104,35 +97,20 @@ public sealed class PopupZOrderCoordinator : IDisposable
             _hasMainWindowEverBeenShown = true;
 
         var foregroundWindow = GetForegroundWindow();
+
         if (foregroundWindow == IntPtr.Zero)
         {
-            BringPopupAboveMainWindow();
+            BringPopupTopMost();
             return;
         }
 
         if (IsOwnedByCurrentProcess(foregroundWindow) || IsPopupWindow(foregroundWindow))
         {
-            BringPopupAboveMainWindow();
+            BringPopupTopMost();
             return;
         }
 
         SendPopupBehindOtherApps();
-    }
-
-    private void BringPopupAboveMainWindow()
-    {
-        var popupHandle = GetPopupHandle();
-        if (popupHandle == IntPtr.Zero)
-            return;
-
-        SetWindowPos(
-            popupHandle,
-            HwndTopMost,
-            0,
-            0,
-            0,
-            0,
-            SwpNoActivate | SwpNoMove | SwpNoSize | SwpNoOwnerZOrder | SwpNoSendChanging);
     }
 
     private void BringPopupTopMost()
@@ -141,14 +119,7 @@ public sealed class PopupZOrderCoordinator : IDisposable
         if (popupHandle == IntPtr.Zero)
             return;
 
-        SetWindowPos(
-            popupHandle,
-            HwndTopMost,
-            0,
-            0,
-            0,
-            0,
-            SwpNoActivate | SwpNoMove | SwpNoSize | SwpNoOwnerZOrder | SwpNoSendChanging);
+        SetWindowPos(popupHandle, HwndTopMost, 0, 0, 0, 0, SwpNoActivate | SwpNoMove | SwpNoSize | SwpNoOwnerZOrder | SwpNoSendChanging);
     }
 
     private void SendPopupBehindOtherApps()
@@ -157,14 +128,7 @@ public sealed class PopupZOrderCoordinator : IDisposable
         if (popupHandle == IntPtr.Zero)
             return;
 
-        SetWindowPos(
-            popupHandle,
-            HwndBottom,
-            0,
-            0,
-            0,
-            0,
-            SwpNoActivate | SwpNoMove | SwpNoSize | SwpNoOwnerZOrder | SwpNoSendChanging);
+        SetWindowPos(popupHandle, HwndBottom, 0, 0, 0, 0, SwpNoActivate | SwpNoMove | SwpNoSize | SwpNoOwnerZOrder | SwpNoSendChanging);
     }
 
     private IntPtr GetPopupHandle() => (PresentationSource.FromVisual(_popup.Child) as HwndSource)?.Handle ?? IntPtr.Zero;
@@ -204,14 +168,7 @@ public sealed class PopupZOrderCoordinator : IDisposable
 
     [DllImport("user32.dll", SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    private static extern bool SetWindowPos(
-        IntPtr hWnd,
-        IntPtr hWndInsertAfter,
-        int x,
-        int y,
-        int cx,
-        int cy,
-        uint uFlags);
+    private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, uint uFlags);
 
     [DllImport("user32.dll")]
     private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out int lpdwProcessId);

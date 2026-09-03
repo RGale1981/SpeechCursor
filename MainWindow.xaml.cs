@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Windows;
+namespace SpeechCursor;
 
 public partial class MainWindow : Window
 {

@@ -1,9 +1,8 @@
-using System;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
 
-namespace Windows.Common;
+namespace SpeechCursor.Common;
 
 internal static class MonitorWorkAreaHelper
 {
@@ -41,16 +40,35 @@ internal static class MonitorWorkAreaHelper
     public static Rect GetWindowBounds(Window window)
     {
         var handle = new WindowInteropHelper(window).Handle;
+
         if (handle == IntPtr.Zero)
-            return new Rect(window.Left, window.Top, window.ActualWidth > 0 ? window.ActualWidth : window.Width, window.ActualHeight > 0 ? window.ActualHeight : window.Height);
+        {
+            return new Rect(window.Left,
+                            window.Top,
+                            window.ActualWidth > 0 ? window.ActualWidth : window.Width,
+                            window.ActualHeight > 0 ? window.ActualHeight : window.Height);
+        }
 
         if (DwmGetWindowAttribute(handle, DwmwaExtendedFrameBounds, out NativeRect dwmRect, Marshal.SizeOf<NativeRect>()) == 0)
-            return TransformDeviceRectToDip(handle, new Rect(dwmRect.Left, dwmRect.Top, dwmRect.Right - dwmRect.Left, dwmRect.Bottom - dwmRect.Top));
+        {
+            return TransformDeviceRectToDip(handle, new Rect(dwmRect.Left,
+                                                             dwmRect.Top,
+                                                             dwmRect.Right - dwmRect.Left,
+                                                             dwmRect.Bottom - dwmRect.Top));
+        }
 
         if (!GetWindowRect(handle, out var rect))
-            return new Rect(window.Left, window.Top, window.ActualWidth > 0 ? window.ActualWidth : window.Width, window.ActualHeight > 0 ? window.ActualHeight : window.Height);
+        {
+            return new Rect(window.Left,
+                            window.Top,
+                            window.ActualWidth > 0 ? window.ActualWidth : window.Width,
+                            window.ActualHeight > 0 ? window.ActualHeight : window.Height);
+        }
 
-        return TransformDeviceRectToDip(handle, new Rect(rect.Left, rect.Top, rect.Right - rect.Left, rect.Bottom - rect.Top));
+        return TransformDeviceRectToDip(handle, new Rect(rect.Left,
+                                                         rect.Top,
+                                                         rect.Right - rect.Left,
+                                                         rect.Bottom - rect.Top));
     }
 
     private static Rect GetWorkAreaFromMonitor(IntPtr monitor, Window referenceWindow)
@@ -64,11 +82,11 @@ internal static class MonitorWorkAreaHelper
             return SystemParameters.WorkArea;
 
         var handle = new WindowInteropHelper(referenceWindow).Handle;
-        var deviceRect = new Rect(
-            monitorInfo.RcWork.Left,
-            monitorInfo.RcWork.Top,
-            monitorInfo.RcWork.Right - monitorInfo.RcWork.Left,
-            monitorInfo.RcWork.Bottom - monitorInfo.RcWork.Top);
+
+        var deviceRect = new Rect(monitorInfo.RcWork.Left,
+                                  monitorInfo.RcWork.Top,
+                                  monitorInfo.RcWork.Right - monitorInfo.RcWork.Left,
+                                  monitorInfo.RcWork.Bottom - monitorInfo.RcWork.Top);
 
         return TransformDeviceRectToDip(handle, deviceRect);
     }
@@ -76,6 +94,7 @@ internal static class MonitorWorkAreaHelper
     private static Rect TransformDeviceRectToDip(IntPtr handle, Rect deviceRect)
     {
         var source = HwndSource.FromHwnd(handle);
+
         if (source?.CompositionTarget is null)
             return deviceRect;
 

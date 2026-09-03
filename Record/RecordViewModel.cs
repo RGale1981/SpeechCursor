@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Windows.Record;
+namespace SpeechCursor.Record;
 
 public class RecordViewModel : INotifyPropertyChanged
 {
@@ -23,6 +23,6 @@ public class RecordViewModel : INotifyPropertyChanged
         }
     }
 
-    private void OnPropertyChanged(string propertyName) 
+    private void OnPropertyChanged(string propertyName)
         => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 }

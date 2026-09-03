@@ -1,21 +1,15 @@
 using System.Windows;
 
-namespace Windows.Behaviors;
+namespace SpeechCursor.Behaviors;
 
 public static class ActualSizeBehavior
 {
     public static readonly DependencyProperty EnableActualWidthReportingProperty =
-        DependencyProperty.RegisterAttached(
-            "EnableActualWidthReporting",
-            typeof(bool),
-            typeof(ActualSizeBehavior),
+        DependencyProperty.RegisterAttached("EnableActualWidthReporting", typeof(bool), typeof(ActualSizeBehavior),
             new PropertyMetadata(false, OnEnableActualWidthReportingChanged));
 
     public static readonly DependencyProperty ReportedActualWidthProperty =
-        DependencyProperty.RegisterAttached(
-            "ReportedActualWidth",
-            typeof(double),
-            typeof(ActualSizeBehavior),
+        DependencyProperty.RegisterAttached("ReportedActualWidth", typeof(double), typeof(ActualSizeBehavior),
             new FrameworkPropertyMetadata(default(double), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
     public static bool GetEnableActualWidthReporting(DependencyObject obj)
@@ -30,12 +24,12 @@ public static class ActualSizeBehavior
     public static void SetReportedActualWidth(DependencyObject obj, double value)
         => obj.SetValue(ReportedActualWidthProperty, value);
 
-    private static void OnEnableActualWidthReportingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnEnableActualWidthReportingChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
     {
-        if (d is not FrameworkElement element)
+        if (obj is not FrameworkElement element)
             return;
 
-        if ((bool)e.NewValue)
+        if ((bool)args.NewValue)
         {
             element.Loaded += OnElementLoaded;
             element.SizeChanged += OnElementSizeChanged;
@@ -47,13 +41,13 @@ public static class ActualSizeBehavior
         }
     }
 
-    private static void OnElementLoaded(object sender, RoutedEventArgs e)
+    private static void OnElementLoaded(object sender, RoutedEventArgs args)
     {
         if (sender is FrameworkElement element)
             SetReportedActualWidth(element, element.ActualWidth);
     }
 
-    private static void OnElementSizeChanged(object sender, SizeChangedEventArgs e)
+    private static void OnElementSizeChanged(object sender, SizeChangedEventArgs args)
     {
         if (sender is FrameworkElement element)
             SetReportedActualWidth(element, element.ActualWidth);

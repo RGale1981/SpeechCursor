@@ -1,14 +1,15 @@
-﻿using System;
+﻿using SpeechCursor.Behaviors;
+using SpeechCursor.Common;
+using SpeechCursor.Record;
+
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Interop;
 
-using Windows.Behaviors;
-using Windows.Common;
-using Windows.Record;
+using SpeechCursor.Record;
 
-namespace Windows;
+namespace SpeechCursor;
 
 public partial class App : Application
 {
@@ -78,6 +79,8 @@ public partial class App : Application
             VerticalOffset = popupTop
         };
 
+        _recordPopup.Closed += OnRecordPopupClosed;
+
         PopupDragBehavior.SetHostPopup(recordControls, _recordPopup);
         _popupZOrderCoordinator = new PopupZOrderCoordinator(_mainWindow, _recordPopup);
         UpdatePopupDragAvailability();
@@ -124,7 +127,9 @@ public partial class App : Application
 
         if (_recordPopup is not null)
         {
+            _recordPopup.Closed -= OnRecordPopupClosed;
             UnhookPopupPositionTracking(_recordPopup);
+
             _recordPopup.IsOpen = false;
             _recordPopup = null;
             _recordControls = null;
@@ -133,9 +138,13 @@ public partial class App : Application
         if (_mainWindowViewModel is not null)
         {
             _mainWindowViewModel.RecordViewModel.ToggleStateChanged -= OnRecordToggleStateChanged;
-            _mainWindowViewModel.Dispose();
             _mainWindowViewModel = null;
         }
+    }
+
+    private void OnRecordPopupClosed(object? sender, EventArgs e)
+    {
+        Shutdown();
     }
 
     private void OnMainWindowBoundsChanged(object? sender, EventArgs e)

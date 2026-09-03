@@ -2,29 +2,20 @@ using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 
-namespace Windows.Behaviors;
+namespace SpeechCursor.Behaviors;
 
 public static class PopupDragBehavior
 {
     private static readonly DependencyProperty DragStateProperty =
-        DependencyProperty.RegisterAttached(
-            "DragState",
-            typeof(DragState),
-            typeof(PopupDragBehavior),
+        DependencyProperty.RegisterAttached("DragState", typeof(DragState), typeof(PopupDragBehavior),
             new PropertyMetadata(null));
 
     public static readonly DependencyProperty EnableDragProperty =
-        DependencyProperty.RegisterAttached(
-            "EnableDrag",
-            typeof(bool),
-            typeof(PopupDragBehavior),
+        DependencyProperty.RegisterAttached("EnableDrag", typeof(bool), typeof(PopupDragBehavior),
             new PropertyMetadata(false, OnEnableDragChanged));
 
     public static readonly DependencyProperty HostPopupProperty =
-        DependencyProperty.RegisterAttached(
-            "HostPopup",
-            typeof(Popup),
-            typeof(PopupDragBehavior),
+        DependencyProperty.RegisterAttached("HostPopup", typeof(Popup), typeof(PopupDragBehavior),
             new PropertyMetadata(null));
 
     public static bool GetEnableDrag(DependencyObject obj) => (bool)obj.GetValue(EnableDragProperty);
@@ -35,12 +26,12 @@ public static class PopupDragBehavior
 
     public static void SetHostPopup(DependencyObject obj, Popup? value) => obj.SetValue(HostPopupProperty, value);
 
-    private static void OnEnableDragChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnEnableDragChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
     {
-        if (d is not UIElement element)
+        if (obj is not UIElement element)
             return;
 
-        if ((bool)e.NewValue)
+        if ((bool)args.NewValue)
         {
             element.PreviewMouseLeftButtonDown += OnMouseDown;
             element.PreviewMouseMove += OnMouseMove;
@@ -54,7 +45,7 @@ public static class PopupDragBehavior
         }
     }
 
-    private static void OnMouseDown(object sender, MouseButtonEventArgs e)
+    private static void OnMouseDown(object sender, MouseButtonEventArgs args)
     {
         if (sender is not UIElement element)
             return;
@@ -64,7 +55,7 @@ public static class PopupDragBehavior
 
         var state = new DragState
         {
-            StartMouseScreen = element.PointToScreen(e.GetPosition(element)),
+            StartMouseScreen = element.PointToScreen(args.GetPosition(element)),
             IsDragging = false,
             StartHorizontalOffset = GetHostPopup(element)!.HorizontalOffset,
             StartVerticalOffset = GetHostPopup(element)!.VerticalOffset
@@ -73,7 +64,7 @@ public static class PopupDragBehavior
         element.SetValue(DragStateProperty, state);
     }
 
-    private static void OnMouseMove(object sender, MouseEventArgs e)
+    private static void OnMouseMove(object sender, MouseEventArgs args)
     {
         if (sender is not UIElement element)
             return;
@@ -84,13 +75,13 @@ public static class PopupDragBehavior
         if (popup is null || state is null)
             return;
 
-        if (e.LeftButton != MouseButtonState.Pressed)
+        if (args.LeftButton != MouseButtonState.Pressed)
         {
             ClearDragState(element);
             return;
         }
 
-        var currentMouseScreen = element.PointToScreen(e.GetPosition(element));
+        var currentMouseScreen = element.PointToScreen(args.GetPosition(element));
         var delta = currentMouseScreen - state.StartMouseScreen;
 
         if (!state.IsDragging)
@@ -105,17 +96,19 @@ public static class PopupDragBehavior
 
         popup.HorizontalOffset = state.StartHorizontalOffset + delta.X;
         popup.VerticalOffset = state.StartVerticalOffset + delta.Y;
-        e.Handled = true;
+
+        args.Handled = true;
     }
 
-    private static void OnMouseUp(object sender, MouseButtonEventArgs e)
+    private static void OnMouseUp(object sender, MouseButtonEventArgs args)
     {
         if (sender is not UIElement element)
             return;
 
         var state = (DragState?)element.GetValue(DragStateProperty);
+
         if (state?.IsDragging == true)
-            e.Handled = true;
+            args.Handled = true;
 
         ClearDragState(element);
     }

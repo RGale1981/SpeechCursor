@@ -1,14 +1,12 @@
-using System;
+using SpeechCursor.Record;
+
 using System.ComponentModel;
 
-using Windows.Record;
+namespace SpeechCursor;
 
-namespace Windows;
-
-public class MainWindowViewModel : INotifyPropertyChanged, IDisposable
+public class MainWindowViewModel : INotifyPropertyChanged
 {
     private readonly RecordViewModel _recordViewModel;
-    private bool _isDisposed;
 
     public MainWindowViewModel()
     {
@@ -18,13 +16,4 @@ public class MainWindowViewModel : INotifyPropertyChanged, IDisposable
     public event PropertyChangedEventHandler? PropertyChanged;
 
     public RecordViewModel RecordViewModel => _recordViewModel;
-
-    public void Dispose()
-    {
-        if (_isDisposed)
-            return;
-
-        _isDisposed = true;
-        GC.SuppressFinalize(this);
-    }
 }

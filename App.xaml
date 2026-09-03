@@ -1,7 +1,7 @@
-﻿<Application x:Class="Windows.App"
+﻿<Application x:Class="SpeechCursor.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Windows">
+             xmlns:local="clr-namespace:SpeechCursor">
 
     <Application.Resources>
         
