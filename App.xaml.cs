@@ -37,6 +37,7 @@ public partial class App : Application
         };
 
         MainWindow = _mainWindow;
+
         _mainWindow.Closed += OnMainWindowClosed;
         _mainWindow.LocationChanged += OnMainWindowBoundsChanged;
         _mainWindow.SizeChanged += OnMainWindowBoundsChanged;
@@ -58,6 +59,7 @@ public partial class App : Application
         };
 
         _recordControls = recordControls;
+
         recordControls.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
 
         var popupWidth = recordControls.DesiredSize.Width;
@@ -80,10 +82,13 @@ public partial class App : Application
         _recordPopup.Closed += OnRecordPopupClosed;
 
         PopupDragBehavior.SetHostPopup(recordControls, _recordPopup);
+
         _popupZOrderCoordinator = new PopupZOrderCoordinator(_mainWindow, _recordPopup);
+
         UpdatePopupDragAvailability();
         PositionMainWindowFromPopup();
         HookPopupPositionTracking(_recordPopup);
+
         recordViewModel.ToggleStateChanged += OnRecordToggleStateChanged;
     }
 
