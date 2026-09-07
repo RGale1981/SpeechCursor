@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace SpeechCursor.Infrastructure.Windowing.Contracts;
+namespace SpeechCursor.Presentation.Dialogs.Popups.Contracts;
 
 public interface IPopupHost
 {

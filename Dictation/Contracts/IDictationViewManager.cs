@@ -1,8 +1,8 @@
 ﻿using System.Windows;
 
-namespace SpeechCursor.Infrastructure.Windowing.Contracts;
+namespace SpeechCursor.Dictation.Contracts;
 
-public interface IMainWindowManager
+public interface IDictationViewManager
 {
     event EventHandler? WindowBoundsChanged;
 

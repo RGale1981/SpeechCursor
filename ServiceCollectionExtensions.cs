@@ -1,17 +1,28 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-using SpeechCursor.Infrastructure.Windowing;
-using SpeechCursor.Infrastructure.Windowing.Contracts;
+using SpeechCursor.Dictation;
+using SpeechCursor.Dictation.Contracts;
+using SpeechCursor.Presentation.Dialogs;
+using SpeechCursor.Presentation.Dialogs.Contracts;
+using SpeechCursor.Presentation.Dialogs.Popups;
+using SpeechCursor.Presentation.Dialogs.Popups.Contracts;
 
 namespace SpeechCursor;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection RegisterServices(this IServiceCollection services)
+    public static IServiceCollection AddServices(this IServiceCollection services)
     {
-        services.AddSingleton<IWindowFactory, WindowFactory>();
-        services.AddSingleton<IWindowManager, WindowManager>();
-        services.AddSingleton<IMainWindowManager, MainWindowManager>();
+        services.RegisterWindowing();
+
+        return services;
+    }
+
+    private static IServiceCollection RegisterWindowing(this IServiceCollection services)
+    {
+        services.AddSingleton<IDialogFactory, DialogFactory>();
+        services.AddSingleton<IDalogManager, DialogManager>();
+        services.AddSingleton<IDictationViewManager, DictationViewManager>();
         services.AddSingleton<IPopupManager, PopupManager>();
 
         return services;

@@ -1,13 +1,13 @@
 ﻿using System.Windows;
 using System.Windows.Controls.Primitives;
 
-namespace SpeechCursor.Infrastructure.Windowing.Contracts;
+namespace SpeechCursor.Presentation.Dialogs.Popups.Contracts;
 
 public interface IPopupManager
 {
-    void SetHost(Window windowHost);
+    void SetHost(Window host);
 
-    void SetHost(Popup popupHost);
+    void SetHost(Popup host);
 
     void HidePopup(PopupType type);
 

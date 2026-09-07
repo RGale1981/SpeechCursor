@@ -1,26 +1,26 @@
 ﻿using SpeechCursor.Infrastructure.Extensions;
-using SpeechCursor.Infrastructure.Windowing.Contracts;
+using SpeechCursor.Presentation.Dialogs.Popups.Contracts;
 
 using System.Windows;
 using System.Windows.Controls.Primitives;
 
-namespace SpeechCursor.Infrastructure.Windowing;
+namespace SpeechCursor.Presentation.Dialogs.Popups;
 
-public sealed class PopupManager(IPopupHost host) : IPopupManager, IDisposable
+public sealed class PopupManager(IPopupHost popupHost) : IPopupManager, IDisposable
 {
     private readonly Dictionary<PopupType, IPopupDialog> _popups = [];
     private bool _disposed;
 
-    public void SetHost(Window windowHost)
+    public void SetHost(Window host)
     {
-        host = new WindowHost(windowHost);
+        popupHost = new DialogHost(host);
 
         RepositionPopupsForNewHost();
     }
 
-    public void SetHost(Popup popupHost)
+    public void SetHost(Popup host)
     {
-        host = new PopupHost(popupHost);
+        popupHost = new PopupHost(host);
 
         RepositionPopupsForNewHost();
     }
@@ -98,7 +98,7 @@ public sealed class PopupManager(IPopupHost host) : IPopupManager, IDisposable
         if (isModal && activePopup != null)
             return new PopupHost(activePopup.Popup);
 
-        return host;
+        return popupHost;
     }
 
     private void PositionPopup(IPopupDialog dialog)

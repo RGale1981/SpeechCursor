@@ -414,7 +414,7 @@ public partial class App : Application
     {
         var services = new ServiceCollection();
 
-        services.RegisterServices();
+        services.AddServices();
 
         Services = services.BuildServiceProvider();
     }

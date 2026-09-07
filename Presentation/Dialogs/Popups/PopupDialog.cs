@@ -1,9 +1,9 @@
-﻿using SpeechCursor.Infrastructure.Windowing.Contracts;
+﻿using SpeechCursor.Presentation.Dialogs.Popups.Contracts;
 
 using System.Windows;
 using System.Windows.Controls.Primitives;
 
-namespace SpeechCursor.Infrastructure.Windowing;
+namespace SpeechCursor.Presentation.Dialogs.Popups;
 
 public sealed class PopupDialog(PopupType type, Popup popup, FrameworkElement content, IPopupHost host, bool isModal) : IPopupDialog, IDisposable
 {

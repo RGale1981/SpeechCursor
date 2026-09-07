@@ -1,11 +1,11 @@
 ﻿using SpeechCursor.Infrastructure.Common;
-using SpeechCursor.Infrastructure.Windowing.Contracts;
+using SpeechCursor.Presentation.Dialogs.Popups.Contracts;
 
 using System.Windows;
 
-namespace SpeechCursor.Infrastructure.Windowing;
+namespace SpeechCursor.Presentation.Dialogs;
 
-public class WindowHost(Window window) : IPopupHost
+public class DialogHost(Window window) : IPopupHost
 {
     public Window? AsWindow() => window;
 

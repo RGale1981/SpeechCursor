@@ -1,4 +1,4 @@
-﻿using SpeechCursor.Infrastructure.Windowing.Contracts;
+﻿using SpeechCursor.Presentation.Dialogs.Popups.Contracts;
 
 using System.ComponentModel;
 

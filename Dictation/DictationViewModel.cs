@@ -1,11 +1,11 @@
-using SpeechCursor.Infrastructure.Windowing.Contracts;
+using SpeechCursor.Presentation.Dialogs.Contracts;
 using SpeechCursor.Record;
 
 using System.ComponentModel;
 
 namespace SpeechCursor.Dictation;
 
-public class DictationViewModel : IWindowViewModel
+public class DictationViewModel : IDialogViewModel
 {
     private readonly RecordControlsViewModel _recordViewModel;
 

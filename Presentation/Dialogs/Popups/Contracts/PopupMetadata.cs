@@ -1,4 +1,4 @@
-﻿namespace SpeechCursor.Infrastructure.Windowing.Contracts;
+﻿namespace SpeechCursor.Presentation.Dialogs.Popups.Contracts;
 
 public static class PopupMetadata
 {

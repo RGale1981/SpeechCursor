@@ -1,10 +1,10 @@
-﻿using SpeechCursor.Infrastructure.Windowing.Contracts;
+﻿using SpeechCursor.Presentation.Dialogs.Contracts;
 
 using System.ComponentModel;
 
 namespace SpeechCursor.Startup;
 
-public class StartupViewModel : IWindowViewModel
+public class StartupViewModel : IDialogViewModel
 {
     public StartupViewModel()
     {

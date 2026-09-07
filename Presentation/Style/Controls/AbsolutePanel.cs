@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace SpeechCursor.Style.Controls;
+namespace SpeechCursor.Presentation.Style.Controls;
 
 public class AbsolutePanel : Panel
 {

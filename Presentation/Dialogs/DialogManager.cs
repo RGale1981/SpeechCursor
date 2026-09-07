@@ -1,11 +1,13 @@
-﻿using SpeechCursor.Infrastructure.Extensions;
-using SpeechCursor.Infrastructure.Windowing.Contracts;
+﻿using SpeechCursor.Dictation.Contracts;
+using SpeechCursor.Infrastructure.Extensions;
+using SpeechCursor.Presentation.Dialogs.Contracts;
+using SpeechCursor.Presentation.Dialogs.Popups.Contracts;
 
 using System.Windows;
 
-namespace SpeechCursor.Infrastructure.Windowing;
+namespace SpeechCursor.Presentation.Dialogs;
 
-public class WindowManager(IMainWindowManager mainWindowManager, IPopupManager popupManager, IWindowFactory windowFactory) : IWindowManager, IDisposable
+public class DialogManager(IDictationViewManager mainWindowManager, IPopupManager popupManager, IDialogFactory windowFactory) : IDalogManager, IDisposable
 {
     private bool _disposed;
 
@@ -31,7 +33,7 @@ public class WindowManager(IMainWindowManager mainWindowManager, IPopupManager p
 
     private void CreateStartupWindow()
     {
-        var startupDialog = windowFactory.CreateWindow(WindowType.StartupWindow);
+        var startupDialog = windowFactory.CreateWindow(DialogType.StartupWindow);
 
         popupManager.SetHost(startupDialog);
 

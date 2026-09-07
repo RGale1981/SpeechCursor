@@ -1,8 +1,8 @@
 ﻿using System.Windows;
 
-namespace SpeechCursor.Infrastructure.Windowing.Extensions;
+namespace SpeechCursor.Presentation.Dialogs.Extensions;
 
-public static class WindowExtensions
+public static class DialogExtensions
 {
     public static void SetVisibilityProperties(this Window window, bool isVisible)
     {

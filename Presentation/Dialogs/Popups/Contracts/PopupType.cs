@@ -1,4 +1,4 @@
-﻿namespace SpeechCursor.Infrastructure.Windowing.Contracts;
+﻿namespace SpeechCursor.Presentation.Dialogs.Popups.Contracts;
 
 public enum PopupType
 {
@@ -9,4 +9,3 @@ public enum PopupType
     Confirmation,
     SplashScreen
 }
-

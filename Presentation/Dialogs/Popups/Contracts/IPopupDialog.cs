@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls.Primitives;
 
-namespace SpeechCursor.Infrastructure.Windowing.Contracts;
+namespace SpeechCursor.Presentation.Dialogs.Popups.Contracts;
 
 public interface IPopupDialog
 {

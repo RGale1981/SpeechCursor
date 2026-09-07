@@ -1,20 +1,20 @@
 ﻿using SpeechCursor.Dictation;
-using SpeechCursor.Infrastructure.Windowing.Contracts;
-using SpeechCursor.Infrastructure.Windowing.Extensions;
+using SpeechCursor.Presentation.Dialogs.Contracts;
+using SpeechCursor.Presentation.Dialogs.Extensions;
 using SpeechCursor.Startup;
 
 using System.Windows;
 
-namespace SpeechCursor.Infrastructure.Windowing;
+namespace SpeechCursor.Presentation.Dialogs;
 
-internal class WindowFactory : IWindowFactory
+internal class DialogFactory : IDialogFactory
 {
-    public Window CreateWindow(WindowType type, bool isVisible = false, WindowStartupLocation startupLocation = WindowStartupLocation.CenterScreen)
+    public Window CreateWindow(DialogType type, bool isVisible = false, WindowStartupLocation startupLocation = WindowStartupLocation.CenterScreen)
     {
         var window = type switch
         {
-            WindowType.MainWindow => CreateMainWindow(),
-            WindowType.StartupWindow => CreateStartupWindow(),
+            DialogType.MainWindow => CreateMainWindow(),
+            DialogType.StartupWindow => CreateStartupWindow(),
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
 

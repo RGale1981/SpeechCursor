@@ -1,20 +1,21 @@
-﻿using SpeechCursor.Infrastructure.Windowing.Contracts;
+﻿using SpeechCursor.Dictation.Contracts;
+using SpeechCursor.Presentation.Dialogs.Contracts;
 
 using System.Windows;
 using System.Windows.Interop;
 
-namespace SpeechCursor.Infrastructure.Windowing;
+namespace SpeechCursor.Dictation;
 
-public sealed class MainWindowManager : IMainWindowManager, IDisposable
+public sealed class DictationViewManager : IDictationViewManager, IDisposable
 {
     private Window? _mainWindow;
 
     private bool _disposed;
-    private readonly IWindowFactory _windowFactory;
+    private readonly IDialogFactory _windowFactory;
 
     public event EventHandler? WindowBoundsChanged;
 
-    public MainWindowManager(IWindowFactory windowFactory)
+    public DictationViewManager(IDialogFactory windowFactory)
     {
         _windowFactory = windowFactory;
     }
@@ -53,7 +54,7 @@ public sealed class MainWindowManager : IMainWindowManager, IDisposable
 
     private void CreateMainWindow()
     {
-        MainWindow = _windowFactory.CreateWindow(WindowType.MainWindow);
+        MainWindow = _windowFactory.CreateWindow(DialogType.MainWindow);
 
         Application.Current.MainWindow = MainWindow;
     }
