@@ -2,7 +2,7 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
 
-namespace SpeechCursor.Common;
+namespace SpeechCursor.Infrastructure.Common;
 
 internal static class MonitorWorkAreaHelper
 {

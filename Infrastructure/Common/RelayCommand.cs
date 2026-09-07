@@ -1,6 +1,6 @@
 using System.Windows.Input;
 
-namespace SpeechCursor.Common;
+namespace SpeechCursor.Infrastructure.Common;
 
 public sealed class RelayCommand(Action<object?> execute, Predicate<object?>? canExecute = null) : ICommand
 {

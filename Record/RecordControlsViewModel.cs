@@ -1,8 +1,10 @@
-﻿using System.ComponentModel;
+﻿using SpeechCursor.Infrastructure.Windowing.Contracts;
+
+using System.ComponentModel;
 
 namespace SpeechCursor.Record;
 
-public class RecordViewModel : INotifyPropertyChanged
+public class RecordControlsViewModel : IPopupViewModel
 {
     private bool _toggleState;
 

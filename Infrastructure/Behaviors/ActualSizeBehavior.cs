@@ -1,6 +1,6 @@
 using System.Windows;
 
-namespace SpeechCursor.Behaviors;
+namespace SpeechCursor.Infrastructure.Behaviors;
 
 public static class ActualSizeBehavior
 {

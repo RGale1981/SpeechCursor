@@ -5,7 +5,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Threading;
 
-namespace SpeechCursor.Behaviors;
+namespace SpeechCursor.Infrastructure.Behaviors;
 
 public sealed class PopupZOrderCoordinator : IDisposable
 {

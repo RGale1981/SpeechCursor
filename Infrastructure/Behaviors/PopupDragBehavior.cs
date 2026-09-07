@@ -2,7 +2,7 @@ using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 
-namespace SpeechCursor.Behaviors;
+namespace SpeechCursor.Infrastructure.Behaviors;
 
 public static class PopupDragBehavior
 {

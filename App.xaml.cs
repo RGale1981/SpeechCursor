@@ -1,5 +1,8 @@
-﻿using SpeechCursor.Behaviors;
-using SpeechCursor.Common;
+﻿using Microsoft.Extensions.DependencyInjection;
+
+using SpeechCursor.Dictation;
+using SpeechCursor.Infrastructure.Behaviors;
+using SpeechCursor.Infrastructure.Common;
 using SpeechCursor.Record;
 
 using System.ComponentModel;
@@ -9,12 +12,15 @@ using System.Windows.Interop;
 
 namespace SpeechCursor;
 
+
 public partial class App : Application
 {
+    public IServiceProvider Services { get; private set; }
+
     private const double PopupGap = 0;
 
-    private MainWindow? _mainWindow;
-    private MainWindowViewModel? _mainWindowViewModel;
+    private Window? _mainWindow;
+    private DictationViewModel? _mainWindowViewModel;
     private Popup? _recordPopup;
     private RecordControls? _recordControls;
     private PopupZOrderCoordinator? _popupZOrderCoordinator;
@@ -25,9 +31,11 @@ public partial class App : Application
     {
         base.OnStartup(e);
 
-        _mainWindowViewModel = new MainWindowViewModel();
+        ConfigureServices();
 
-        _mainWindow = new MainWindow
+        _mainWindowViewModel = new DictationViewModel();
+
+        _mainWindow = new DictationWindow
         {
             DataContext = _mainWindowViewModel,
             ShowActivated = false,
@@ -48,7 +56,7 @@ public partial class App : Application
         CreateRecordPopup(_mainWindowViewModel.RecordViewModel);
     }
 
-    private void CreateRecordPopup(RecordViewModel recordViewModel)
+    private void CreateRecordPopup(RecordControlsViewModel recordViewModel)
     {
         if (_recordPopup is not null || _mainWindow is null)
             return;
@@ -400,5 +408,14 @@ public partial class App : Application
         LeftOutsideTopAligned,
         RightOutsideTopAligned,
         OverlayBottomRight
+    }
+
+    private void ConfigureServices()
+    {
+        var services = new ServiceCollection();
+
+        services.RegisterServices();
+
+        Services = services.BuildServiceProvider();
     }
 }
