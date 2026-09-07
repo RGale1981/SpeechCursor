@@ -10,8 +10,8 @@
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Style/ButtonStyle.xaml" />
-                <ResourceDictionary Source="Style/WindowStyle.xaml" />
+                <ResourceDictionary Source="Presentation/Style/ButtonStyle.xaml" />
+                <ResourceDictionary Source="Presentation/Style/WindowStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
             
         </ResourceDictionary>
