@@ -34,14 +34,14 @@ public static class PopupDragBehavior
         if ((bool)args.NewValue)
         {
             element.PreviewMouseLeftButtonDown += OnMouseDown;
-            element.PreviewMouseMove += OnMouseMove;
             element.PreviewMouseLeftButtonUp += OnMouseUp;
+            element.PreviewMouseMove += OnMouseMove;
         }
         else
         {
             element.PreviewMouseLeftButtonDown -= OnMouseDown;
-            element.PreviewMouseMove -= OnMouseMove;
             element.PreviewMouseLeftButtonUp -= OnMouseUp;
+            element.PreviewMouseMove -= OnMouseMove;
         }
     }
 

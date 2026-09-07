@@ -28,8 +28,8 @@ public sealed class PopupZOrderCoordinator : IDisposable
         _mainWindow = mainWindow;
         _mainWindow.Activated += OnMainWindowActivated;
         _mainWindow.Deactivated += OnMainWindowDeactivated;
-        _mainWindow.StateChanged += OnMainWindowStateChanged;
         _mainWindow.IsVisibleChanged += OnMainWindowIsVisibleChanged;
+        _mainWindow.StateChanged += OnMainWindowStateChanged;
 
         _popup = popup;
         _popup.Opened += OnPopupOpened;
@@ -49,8 +49,8 @@ public sealed class PopupZOrderCoordinator : IDisposable
 
         _mainWindow.Activated -= OnMainWindowActivated;
         _mainWindow.Deactivated -= OnMainWindowDeactivated;
-        _mainWindow.StateChanged -= OnMainWindowStateChanged;
         _mainWindow.IsVisibleChanged -= OnMainWindowIsVisibleChanged;
+        _mainWindow.StateChanged -= OnMainWindowStateChanged;
 
         _popup.Opened -= OnPopupOpened;
 
